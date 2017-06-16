@@ -38,7 +38,7 @@ func IsBlocked(requestorID uint, targetID uint) (isBlock bool) {
 	db := utils.InitDb()
 	defer db.Close()
 	var count int
-	db.Model(&Subscription{}).Where("((requestor_id = ? and target_id = ?) or (requestor_id = ? and target_id = ?)) and is_block = ?", requestorID, targetID, targetID, requestorID, true).Count(&count)
+	db.Model(&Subscription{}).Where("(requestor_id = ? and target_id = ? or requestor_id = ? and target_id = ?) and is_block = ?", requestorID, targetID, targetID, requestorID, true).Count(&count)
 	if count == 0 {
 		isBlock = false
 	} else {
