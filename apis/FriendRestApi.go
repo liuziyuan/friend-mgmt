@@ -36,8 +36,13 @@ func ConnectFriendsHandler(c *gin.Context) {
 		if &requestor != nil && &target != nil {
 			isFriends := models.IsFriends(requestor.ID, target.ID)
 			if !isFriends {
-				models.CreateFriends(requestor, target)
-				c.JSON(http.StatusOK, gin.H{"success": "true"})
+				isBlock := models.IsBlocked(requestor.ID, target.ID)
+				if !isBlock {
+					models.CreateFriends(requestor, target)
+					c.JSON(http.StatusOK, gin.H{"success": "true"})
+				} else {
+					c.JSON(http.StatusOK, gin.H{"message": "you r blocked, can not connect friends"})
+				}
 			} else {
 				c.JSON(http.StatusOK, gin.H{"message": "already friends"})
 			}
