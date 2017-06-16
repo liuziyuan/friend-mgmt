@@ -73,6 +73,7 @@ func RetrieveFriendsHandler(c *gin.Context) {
 			"friends": emails,
 			"count":   len(alice),
 		})
-		//print(friends)
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "please make sure the parms is right"})
 	}
 }
