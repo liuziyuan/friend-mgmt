@@ -1,6 +1,6 @@
 package dtos
 
 // FriendInput The friend input params
-type FriendInput struct {
+type ConnectInput struct {
 	Friends [2]string `json:"friends"`
 }
