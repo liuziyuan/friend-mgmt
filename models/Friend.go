@@ -44,3 +44,26 @@ func RetrieveFriends(uid uint) (friends []Friend) {
 	db.Where("requestor_id = ?", uid).Or("target_id = ?", uid).Find(&friends)
 	return
 }
+
+//GetFriendsByEmail Get Friends by Email
+func GetFriendsByEmail(email string) (uids []int) {
+	user := GetUserByEmailAddr(email)
+	friends := RetrieveFriends(user.ID)
+	alice := []int{}
+	for _, friend := range friends {
+		if friend.RequestorID == int(user.ID) {
+			alice = append(alice, friend.TargetID)
+		} else if friend.TargetID == int(user.ID) {
+			alice = append(alice, friend.RequestorID)
+		}
+	}
+	return alice
+}
+
+//GetFriendsEmail ...
+func GetEmails(users []User) (emails []string) {
+	for _, user := range users {
+		emails = append(emails, user.EmailAddress)
+	}
+	return
+}

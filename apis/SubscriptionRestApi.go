@@ -75,7 +75,69 @@ func BlockSubscribeLogic(requestor models.User, target models.User, c *gin.Conte
 // o has subscribed to updates from "john@example.com"
 // o has been @mentioned in the update
 func RetrieveSubscribeHandler(c *gin.Context) {
+	var input dtos.SubRetrieveInput
+	var notInBlockList bool
+	var notInSub bool
+	var mentionedNotInList bool
+	if c.BindJSON(&input) == nil {
+		requestor := models.GetUserByEmailAddr(input.Sender)
+		target := models.GetUserByEmailAddr(input.Text)
+		if &requestor != nil && &target != nil {
+			//1.friend and not in block list
+			requestorIds := models.GetFriendsByEmail(requestor.EmailAddress)
+			blocklist := models.GetBlockList(requestor.ID)
+			list1 := []int{}
+			for _, friendID := range requestorIds {
+				notInBlockList = true
+				for _, sub := range blocklist {
+					if sub.TargetID == friendID {
+						notInBlockList = false
+						break
+					}
+				}
+				if notInBlockList {
+					list1 = append(list1, friendID)
+				}
+			}
+			//2.sub updates,isBlock is false
+			subs := models.GetSubscriptionListByReqID(requestor.ID)
+			list2 := list1
+			for _, id := range list1 {
+				notInSub = true
+				for _, sub := range subs {
+					if sub.TargetID == id {
+						notInSub = false
+						break
+					}
+				}
+				if !notInSub {
+					list2 = append(list1, id)
+				}
+			}
+			users := models.GetUserByIds(list2)
+			emails := models.GetEmails(users)
+			//target email
+			mentionedNotInList = true
+			for _, email := range emails {
+				if email == target.EmailAddress {
+					mentionedNotInList = false
+					break
+				}
+				if !mentionedNotInList {
+					emails = append(emails, target.EmailAddress)
+				}
+			}
 
+			c.JSON(http.StatusOK, gin.H{
+				"success":    "true",
+				"recipients": emails,
+			})
+		} else {
+			c.JSON(http.StatusOK, gin.H{"message": "someone is not system user"})
+		}
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "please make sure the parms is right"})
+	}
 }
 
 //CommonSubscribeHandler The common function ,you need to call your logic function by callback

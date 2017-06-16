@@ -58,9 +58,9 @@ func ConnectFriendsHandler(c *gin.Context) {
 func RetrieveFriendsHandler(c *gin.Context) {
 	var input dtos.RetrieveInput
 	if c.BindJSON(&input) == nil {
-		ids := GetFriendsByEmail(input.Email)
+		ids := models.GetFriendsByEmail(input.Email)
 		users := models.GetUserByIds(ids)
-		emails := GetFriendsEmail(users)
+		emails := models.GetEmails(users)
 		c.JSON(http.StatusOK, gin.H{
 			"success": "true",
 			"friends": emails,
@@ -75,8 +75,8 @@ func RetrieveFriendsHandler(c *gin.Context) {
 func RetrieveCommonFriendsHandler(c *gin.Context) {
 	var input dtos.FriendsInput
 	if c.BindJSON(&input) == nil {
-		requestorIds := GetFriendsByEmail(input.Friends[0])
-		targetIds := GetFriendsByEmail(input.Friends[1])
+		requestorIds := models.GetFriendsByEmail(input.Friends[0])
+		targetIds := models.GetFriendsByEmail(input.Friends[1])
 		ids := []int{}
 		for _, rid := range requestorIds {
 			for _, tid := range targetIds {
@@ -86,7 +86,7 @@ func RetrieveCommonFriendsHandler(c *gin.Context) {
 			}
 		}
 		users := models.GetUserByIds(ids)
-		emails := GetFriendsEmail(users)
+		emails := models.GetEmails(users)
 		c.JSON(http.StatusOK, gin.H{
 			"success": "true",
 			"friends": emails,
@@ -95,27 +95,4 @@ func RetrieveCommonFriendsHandler(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "please make sure the parms is right"})
 	}
-}
-
-//GetFriendsByEmail Get Friends by Email(private method)
-func GetFriendsByEmail(email string) (uids []int) {
-	user := models.GetUserByEmailAddr(email)
-	friends := models.RetrieveFriends(user.ID)
-	alice := []int{}
-	for _, friend := range friends {
-		if friend.RequestorID == int(user.ID) {
-			alice = append(alice, friend.TargetID)
-		} else if friend.TargetID == int(user.ID) {
-			alice = append(alice, friend.RequestorID)
-		}
-	}
-	return alice
-}
-
-//GetFriendsEmail ...
-func GetFriendsEmail(users []models.User) (emails []string) {
-	for _, user := range users {
-		emails = append(emails, user.EmailAddress)
-	}
-	return
 }

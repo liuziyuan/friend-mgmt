@@ -68,3 +68,19 @@ func GetOneSubscription(requestorID uint, targetID uint) (sub Subscription) {
 	db.Where("requestor_id = ? and target_id = ?", requestorID, targetID).First(&sub)
 	return
 }
+
+//GetBlockList ...
+func GetBlockList(requestorID uint) (subs []Subscription) {
+	db := utils.InitDb()
+	defer db.Close()
+	db.Where("requestor_id = ? and is_block = ?", requestorID, true).Find(&subs)
+	return
+}
+
+//GetSubscriptionListByReqID ...
+func GetSubscriptionListByReqID(requestorID uint) (subs []Subscription) {
+	db := utils.InitDb()
+	defer db.Close()
+	db.Where("requestor_id = ? and is_block = ?", requestorID, false).Find(&subs)
+	return
+}
