@@ -28,5 +28,6 @@ func main() {
 	// db.Create(&models.User{EmailAddress: "angela"})
 	// db.Create(&models.User{EmailAddress: "jason"})
 	// db.Create(&models.User{EmailAddress: "eric"})
+	// db.Create(&models.User{EmailAddress: "terry"})
 	g.Run(":8080")
 }

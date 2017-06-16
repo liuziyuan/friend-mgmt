@@ -9,10 +9,10 @@ import (
 // Friend The Friend Struct
 type Friend struct {
 	gorm.Model
-	Requestor   *User
+	Requestor   User
 	RequestorID int
 
-	Target   *User
+	Target   User
 	TargetID int
 }
 
@@ -34,5 +34,13 @@ func IsFriends(requestorID uint, targetID uint) (isFriends bool) {
 func CreateFriends(requestor User, target User) {
 	db := utils.InitDb()
 	defer db.Close()
-	db.Create(&Friend{Requestor: &requestor, Target: &target})
+	db.Create(&Friend{Requestor: requestor, Target: target})
+}
+
+//RetrieveFriends retrieve the friends list for an email address
+func RetrieveFriends(uid uint) (friends []Friend) {
+	db := utils.InitDb()
+	defer db.Close()
+	db.Where("requestor_id = ?", uid).Or("target_id = ?", uid).Find(&friends)
+	return
 }

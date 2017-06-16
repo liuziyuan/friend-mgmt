@@ -20,3 +20,12 @@ func GetUserByEmailAddr(emailAddr string) (user User) {
 	db.Find(&user, "email_address = ?", emailAddr).First(&user)
 	return
 }
+
+//GetUserByIds Get user by ids
+func GetUserByIds(ids []int) (users []User) {
+	db := utils.InitDb()
+	defer db.Close()
+	db.Where("id in (?)", ids).Find(&users)
+	//db.Table("users").Select("email_address").Where("id in (?)", ids).Scan(&emails)
+	return
+}
