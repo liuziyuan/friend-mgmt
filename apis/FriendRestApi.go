@@ -27,7 +27,7 @@ func GetFriendsHandler(c *gin.Context) {
 
 //ConnectFriendsHandler create a friend connection between two email addresses.
 func ConnectFriendsHandler(c *gin.Context) {
-	var input dtos.ConnectInput
+	var input dtos.FriendsInput
 	if c.BindJSON(&input) == nil {
 		requestor := models.GetUserByEmailAddr(input.Friends[0])
 		target := models.GetUserByEmailAddr(input.Friends[1])
