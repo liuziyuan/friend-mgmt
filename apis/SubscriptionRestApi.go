@@ -21,7 +21,7 @@ func AddSubscriptionRoutes() {
 	Subscriptions.GET("/", GetSubscriptionsHandler)
 	Subscriptions.POST("/subscribe", SubscribeHandler)
 	Subscriptions.POST("/block", BlockSubscribeHandler)
-	// Subscriptions.POST("/common", RetrieveCommonFriendsHandler)
+	Subscriptions.POST("/retrieve", RetrieveSubscribeHandler)
 }
 
 //GetSubscriptionsHandler ...
@@ -65,6 +65,17 @@ func BlockSubscribeLogic(requestor models.User, target models.User, c *gin.Conte
 		models.UpdateSubscription(sub)
 	}
 	c.JSON(http.StatusOK, gin.H{"success": "true"})
+}
+
+//RetrieveSubscribeHandler retrieve all email addresses that can receive updates from an email address
+// Eligibility for receiving updates from i.e. "john@example.com":
+// • has not blocked updates from "john@example.com", and
+// • at least one of the following:
+// o has a friend connection with "john@example.com"
+// o has subscribed to updates from "john@example.com"
+// o has been @mentioned in the update
+func RetrieveSubscribeHandler(c *gin.Context) {
+
 }
 
 //CommonSubscribeHandler The common function ,you need to call your logic function by callback
