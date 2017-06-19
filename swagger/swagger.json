@@ -218,6 +218,38 @@
           }
         }
       }
+    },
+    "/users": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "add a user by email",
+        "description": "",
+        "operationId": "user-create",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "need have requestor and target",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/dtos.RetrieveInput"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
     }
   },
   "securityDefinitions": {

@@ -29,3 +29,10 @@ func GetUserByIds(ids []int) (users []User) {
 	//db.Table("users").Select("email_address").Where("id in (?)", ids).Scan(&emails)
 	return
 }
+
+//CreateUser ...
+func CreateUser(email string) {
+	db := utils.InitDb()
+	defer db.Close()
+	db.Create(&User{EmailAddress: email})
+}
