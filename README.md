@@ -2,8 +2,9 @@
 Friends Management
 
 ## predix cloudy URL
-https://friends-mgmt-gin.run.aws-jp01-pr.ice.predix.io/swagger/
+https://friends-mgmt-gin-liuziyuan.run.aws-jp01-pr.ice.predix.io/swagger/
 
+Please make sure Schemes is HTTPS
 
 ## Install
 1. go get github.com/tools/godep

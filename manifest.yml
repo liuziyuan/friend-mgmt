@@ -1,4 +1,4 @@
 ---
 applications:
-  - name: friends-mgmt-gin
+  - name: friends-mgmt-gin-liuziyuan
     buildpack: https://github.com/cloudfoundry/go-buildpack.git
