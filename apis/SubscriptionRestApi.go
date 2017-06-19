@@ -5,6 +5,8 @@ import (
 	"friends-mgmt-gin/models"
 	"net/http"
 
+	"strings"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -81,7 +83,9 @@ func RetrieveSubscribeHandler(c *gin.Context) {
 	var mentionedNotInList bool
 	if c.BindJSON(&input) == nil {
 		requestor := models.GetUserByEmailAddr(input.Sender)
-		target := models.GetUserByEmailAddr(input.Text)
+		targetlist := strings.Split(input.Text, " ")
+
+		target := models.GetUserByEmailAddr(targetlist[len(targetlist)-1])
 		if &requestor != nil && &target != nil {
 			//1.friend and not in block list
 			requestorIds := models.GetFriendsByEmail(requestor.EmailAddress)
@@ -102,6 +106,7 @@ func RetrieveSubscribeHandler(c *gin.Context) {
 			//2.sub updates,isBlock is false
 			subs := models.GetSubscriptionListByReqID(requestor.ID)
 			list2 := list1
+			copy(list2, list1)
 			for _, id := range list1 {
 				notInSub = true
 				for _, sub := range subs {
