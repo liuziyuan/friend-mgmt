@@ -5,6 +5,7 @@ import (
 	"friends-mgmt-gin/apis"
 	"friends-mgmt-gin/models"
 	"friends-mgmt-gin/utils"
+	"os"
 	"strings"
 
 	"net/http"
@@ -16,7 +17,7 @@ import (
 func main() {
 	g := gin.Default()
 	g.Use(corsHandler)
-
+	gin.SetMode(gin.ReleaseMode)
 	g.StaticFS("swagger", http.Dir("swagger"))
 	restapis.Users = g.Group("/api/users")
 	restapis.Friends = g.Group("/api/friends")
@@ -30,13 +31,12 @@ func main() {
 
 	db.AutoMigrate(&models.User{}, &models.Friend{}, &models.Subscription{})
 
-	// db.Create(&models.User{EmailAddress: "mark"})
-	// db.Create(&models.User{EmailAddress: "lee"})
-	// db.Create(&models.User{EmailAddress: "angela"})
-	// db.Create(&models.User{EmailAddress: "jason"})
-	// db.Create(&models.User{EmailAddress: "eric"})
-	// db.Create(&models.User{EmailAddress: "terry"})
-	g.Run(":8080")
+	if os.Getenv("PORT") == "" {
+		g.Run(":8080")
+	} else {
+		g.Run(":" + os.Getenv("PORT"))
+	}
+
 }
 
 func corsHandler(c *gin.Context) {
