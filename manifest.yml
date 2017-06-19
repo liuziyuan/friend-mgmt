@@ -2,5 +2,3 @@
 applications:
   - name: friends-mgmt-gin
     buildpack: https://github.com/cloudfoundry/go-buildpack.git
-    env:
-      GOVERSION: go1.8

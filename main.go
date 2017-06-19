@@ -15,9 +15,10 @@ import (
 )
 
 func main() {
+	gin.SetMode(gin.ReleaseMode)
 	g := gin.Default()
 	g.Use(corsHandler)
-	gin.SetMode(gin.ReleaseMode)
+
 	g.StaticFS("swagger", http.Dir("swagger"))
 	restapis.Users = g.Group("/api/users")
 	restapis.Friends = g.Group("/api/friends")
