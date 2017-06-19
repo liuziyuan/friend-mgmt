@@ -141,7 +141,7 @@ func RetrieveSubscribeHandler(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"message": "someone is not system user"})
 		}
 	} else {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "please make sure the parms is right"})
+		c.JSON(http.StatusMethodNotAllowed, gin.H{"error": "please make sure the parms is right"})
 	}
 }
 
@@ -157,6 +157,6 @@ func CommonSubscribeHandler(c *gin.Context, callback Callback) {
 			c.JSON(http.StatusOK, gin.H{"message": "someone is not system user"})
 		}
 	} else {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "please make sure the parms is right"})
+		c.JSON(http.StatusMethodNotAllowed, gin.H{"error": "please make sure the parms is right"})
 	}
 }

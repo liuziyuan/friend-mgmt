@@ -1,0 +1,279 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Friends Management API",
+    "version": "1.0.0",
+    "title": "Friends Management API"
+  },
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "friend",
+      "description": "Operations about friend"
+    },
+    {
+      "name": "sub",
+      "description": "Operations about sub"
+    },
+    {
+      "name": "user",
+      "description": "Operations about user"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/friends/connect": {
+      "post": {
+        "tags": [
+          "friend"
+        ],
+        "summary": "create a friend connection between two email addresses",
+        "description": "",
+        "operationId": "fri-connect",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "need have two emails",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/dtos.FriendsInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success ture"
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/friends/retrieve": {
+      "post": {
+        "tags": [
+          "friend"
+        ],
+        "summary": "retrieve the friends list for an email address",
+        "description": "",
+        "operationId": "fri-retrieve",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "need have a email",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/dtos.RetrieveInput"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/friends/common": {
+      "post": {
+        "tags": [
+          "friend"
+        ],
+        "summary": "retrieve the common friends list between two email addresses",
+        "description": "",
+        "operationId": "fri-common",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "need have two emails",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/dtos.FriendsInput"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/subscriptions/subscribe": {
+      "post": {
+        "tags": [
+          "sub"
+        ],
+        "summary": "subscribe to updates from an email address",
+        "description": "",
+        "operationId": "sub-subscribe",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "need have requestor and target",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/dtos.SubscriptionInput"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/subscriptions/block": {
+      "post": {
+        "tags": [
+          "sub"
+        ],
+        "summary": "block updates from an email address",
+        "description": "",
+        "operationId": "sub-block",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "need have requestor and target",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/dtos.SubscriptionInput"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/subscriptions/retrieve": {
+      "post": {
+        "tags": [
+          "sub"
+        ],
+        "summary": "retrieve all email addresses that can receive updates from an email address",
+        "description": "",
+        "operationId": "sub-retrieve",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "need have requestor and target",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/dtos.SubRetrieveInput"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:pets": "modify pets in your account",
+        "read:pets": "read your pets"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "dtos.FriendsInput": {
+      "type": "object",
+      "properties": {
+        "Friends": {
+          "type": "array"
+        }
+      }
+    },
+    "dtos.RetrieveInput": {
+      "type": "object",
+      "properties": {
+        "Email": {
+          "type": "string"
+        }
+      }
+    },
+    "dtos.SubscriptionInput": {
+      "type": "object",
+      "properties": {
+        "Requestor": {
+          "type": "string"
+        },
+        "Target": {
+          "type": "string"
+        }
+      }
+    },
+    "dtos.SubRetrieveInput": {
+      "type": "object",
+      "properties": {
+        "Sender": {
+          "type": "string"
+        },
+        "Text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
