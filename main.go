@@ -6,7 +6,6 @@ import (
 	"friends-mgmt-gin/models"
 	"friends-mgmt-gin/utils"
 	"os"
-	"strings"
 
 	"net/http"
 
@@ -42,9 +41,9 @@ func main() {
 
 func corsHandler(c *gin.Context) {
 	fmt.Println("RequestURI :")
-	if strings.HasPrefix(c.Request.RequestURI, "/user") {
-		c.Header("Content-Type", "application/json")
-	}
+	// if strings.HasPrefix(c.Request.RequestURI, "/") {
+	// 	c.Header("Content-Type", "application/json")
+	// }
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.Header("Access-Control-Allow-Credentials", "true")
 	c.Header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization, Pragma, Cache-control, Expires")
